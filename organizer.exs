@@ -1,3 +1,65 @@
+defmodule Msg do
+
+    def arg_count do
+
+	"Usage: elixir organizer.exs <directory_path>"
+
+    end
+
+    def invalid_directory(path) do
+
+	"Directory not found: #{path}"
+
+    end
+
+end
+
+
+defmodule Validator do
+
+    def validate_args_count(args) do
+
+	if Enum.count(args) == 1 do
+
+	    true
+
+	else
+
+	    IO.puts Msg.arg_count
+
+	    false
+
+	end
+
+    end
+
+    def validate_directory_path(arg) do
+
+	if File.dir?(arg) do
+
+	    true
+
+	else
+
+	    IO.puts Msg.invalid_directory(arg)
+
+	    false
+
+	end
+
+    end
+
+    def run do
+
+	args = System.argv
+
+	if validate_args_count(args) and validate_directory_path(Enum.at(args, 0)), do: true, else: false
+
+    end
+
+end
+
+
 defmodule Organizer do
 
     def remove_file(file, directory) do
@@ -83,6 +145,10 @@ defmodule Organizer do
 
 end
 
-directory = Enum.at System.argv(), 0
+if Validator.run do # only proceeds with the program when all is ok
 
-Organizer.run directory
+    directory = Enum.at System.argv(), 0
+
+    Organizer.run directory
+
+end
